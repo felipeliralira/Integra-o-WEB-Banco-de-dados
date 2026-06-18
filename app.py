@@ -26,19 +26,42 @@ def indexRota():
 @app.route('/cadastrar', methods=('POST'))
 
 def criarCadastro():
-    #recebe os dados do formulário
-    cpf = request.form['cpf']
-    primeiro_nome = request.form['primeiro_nome']
-    sobrenome = request.form['sobrenome']
-    idade = request.form['idade']
 
-    #Conecta ao banco de dados
-    conexao = mysql.connector.connect(**bd_config)
+    #except para tratar erros de conexão com o banco de dados
 
-    #levar instrução SQL do python para o banco de dados
-    curso = conexao.cursor()
+    try:
+        #recebe os dados do formulário
+        cpf = request.form['cpf']
+        primeiro_nome = request.form['primeiro_nome']
+        sobrenome = request.form['sobrenome']
+        idade = request.form['idade']
 
-    query = "INSERT INTO tb_cliente (cpf, primeiro_nome, sobrenome, idade) VALUES (%s, %s, %s, %s)"
+        #Conecta ao banco de dados
+        conexao = mysql.connector.connect(**bd_config)
+
+        #levar instrução SQL do python para o banco de dados
+        curso = conexao.cursor()
+
+        #Instrução SQL para inserir os dados do formulário no banco de dados
+        query = "INSERT INTO tb_cliente (cpf, primeiro_nome, sobrenome, idade) VALUES (%s, %s, %s, %s)"
+
+        #Confirma a inserção dos dados no banco de dados
+        curso.execute(query, (cpf, primeiro_nome, sobrenome, idade))
+
+        #salva as alterações no banco de dados
+        curso.commit()
+
+        #fechar o cursor
+        curso.close()
+
+        #fechar a conexão com o banco de dados
+        conexao.close()
+    except mysql.connector.Error as err:
+        return f"Erro ao conectar ao banco de dados: {err}"
+
+
+    
+
     
 
 
