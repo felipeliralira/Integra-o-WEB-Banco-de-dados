@@ -8,7 +8,8 @@ bd_config = {
     'host': '127.0.0.1',
     'user': 'root',
     'password': 'escola',
-    'database': 'cadastro1'
+    'database': 'cadastro1',
+    'ssl_disabled': True
 }
 
 @app.route('/')
@@ -29,7 +30,7 @@ def criarCadastro():
         curso = conexao.cursor()
 
         # Instrução SQL
-        query = "INSERT INTO tb_cliente (cpf, primeiro_nome, sobrenome, idade) VALUES (%s, %s, %s, %s)"
+        query = "INSERT INTO tb_cliente (CPF, PRIMEIRO_NOME, SOBRENOME, IDADE) VALUES (%s, %s, %s, %s)"
 
         # Executa a inserção dos dados
         curso.execute(query, (cpf, primeiro_nome, sobrenome, idade))
