@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Configurações do banco de dados
 bd_config = {
-    'host': '127.0.0.1',
+    'host': 'localhost',
     'user': 'root',
     'password': 'escola',
     'database': 'cadastro1',
@@ -14,7 +14,22 @@ bd_config = {
 
 @app.route('/')
 def indexRota():
-    return render_template('index.html')
+    try:
+        conexaoIndex = mysql.connector.connect(**bd_config)
+        curso_index = conexaoIndex.cursor(dictionary=True)
+
+        curso_index.execute("SELECT * FROM tb_cliente")
+        #Variável que armazena os dados
+        lista_clientes = curso_index.fetchall()
+
+        curso_index.close()
+        conexaoIndex.close()
+
+        return render_template('index.html', clientes=lista_clientes)
+
+
+    except mysql.connector.Error as err:
+        return f"Erro ao carregar a lista: {err}"
 
 @app.route('/cadastrar', methods=['POST'])
 def criarCadastro():
