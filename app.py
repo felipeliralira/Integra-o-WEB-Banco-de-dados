@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, redirect, url_for,request
 import mysql.connector
 
 app = Flask(__name__)
@@ -61,6 +61,8 @@ def criarCadastro():
         
     except mysql.connector.Error as err:
         return f"Erro ao conectar ao banco de dados: {err}"
+    
+@app.route('/remover', methods=['POST'])
 
 if __name__ == '__main__':
     app.run(debug=True)
