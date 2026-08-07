@@ -36,13 +36,17 @@
             </tr>
         </thead>
         <tbody>
-            {% for cliente in clientes %}
+            {% for cliente in Clientes %}
                 <tr>
                     <td>{{cliente.CPF}}</td>
                     <td>{{cliente.PRIMEIRO_NOME}}</td>
                     <td>{{cliente.SOBRENOME}}</td>
                     <td>{{cliente.IDADE}}</td>
-                    <td><button>Excluir</button></td>
+                    <td>
+                        <a href="{{ url_for('excluir', cpf=cliente.CPF) }}"
+                        onclick = "return confirm('Confirmar Exclusão?')">
+                        Excluir </a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -62,7 +62,20 @@ def criarCadastro():
     except mysql.connector.Error as err:
         return f"Erro ao conectar ao banco de dados: {err}"
     
-@app.route('/remover', methods=['POST'])
+@app.route('/excluir/<cpf>')
+def excluir(cpf):
+    try:
+        conexao = mysql.connector.connect(**bd_config)
+        curso = conexao.cursor()
+
+        curso.execute("DELETE FROM tb_cliente WHERE CPF = %s", (cpf))
+        conexao.commit()
+        curso.close()
+        conexao.close()
+
+        return redirect(url_for('index'))
+    except mysql.connector.Error as err:
+        return f"Erro ao carregar a lista: {err}"
 
 if __name__ == '__main__':
     app.run(debug=True)
