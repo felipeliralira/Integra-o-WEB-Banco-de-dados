@@ -12,8 +12,17 @@ bd_config = {
     'ssl_disabled': True
 }
 
-@app.route('/')
-def indexRota():
+#criação rota pagina principal(index)
+@app.route("/")
+def index():
+    return render_template('index.html')
+
+@app.route("/formulario")
+def exibirFormulario():
+    return render_template('cadastro.html')
+
+@app.route("/clientes")
+def tabela_clientes():
     try:
         conexaoIndex = mysql.connector.connect(**bd_config)
         curso_index = conexaoIndex.cursor(dictionary=True)
@@ -25,11 +34,12 @@ def indexRota():
         curso_index.close()
         conexaoIndex.close()
 
-        return render_template('index.html', clientes=lista_clientes)
+        return render_template('tabela.html', clientes=lista_clientes)
 
 
     except mysql.connector.Error as err:
         return f"Erro ao carregar a lista: {err}"
+
 
 @app.route('/cadastrar', methods=['POST'])
 def criarCadastro():
@@ -68,12 +78,12 @@ def excluir(cpf):
         conexao = mysql.connector.connect(**bd_config)
         curso = conexao.cursor()
 
-        curso.execute("DELETE FROM tb_cliente WHERE CPF = %s", (cpf))
+        curso.execute("DELETE FROM tb_cliente WHERE CPF = %s", (cpf,))
         conexao.commit()
         curso.close()
         conexao.close()
 
-        return redirect(url_for('index'))
+        return redirect(url_for('tabela_clientes'))
     except mysql.connector.Error as err:
         return f"Erro ao carregar a lista: {err}"
 

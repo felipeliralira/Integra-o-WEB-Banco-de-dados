@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<div class="container">
+    <h2>Lista de Clientes</h2>
+    
+    <table class="tabela-clientes">
+        <thead>
+            <tr>
+                <th>CPF</th>
+                <th>Primeiro Nome</th>
+                <th>Sobrenome</th>
+                <th>Idade</th>
+                <th class="texto-centro">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{cliente.CPF}}</td>
+                    <td>{{cliente.PRIMEIRO_NOME}}</td>
+                    <td>{{cliente.SOBRENOME}}</td>
+                    <td class="texto-centro">{{cliente.IDADE}}</td>
+                    <td class="texto-centro">
+                        <a href="{{ url_for('excluir', cpf=cliente.CPF) }}"
+                           class="btn-excluir"
+                           onclick="return confirm('Confirmar Exclusão?')">
+                           Excluir
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</html>
